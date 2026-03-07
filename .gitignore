@@ -2,3 +2,5 @@
 .env
 # Drawio backup
 .$*
+# PyCache
+__pycache__
