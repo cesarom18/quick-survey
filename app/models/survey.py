@@ -17,3 +17,5 @@ class Survey(SQLModel, table=True):
     user: User = Relationship(back_populates="surveys")
     # Survey Reponse Relationship
     survey_responses: list["SurveyResponse"] = Relationship(back_populates="survey")
+    # Question Relationship
+    questions: list["Question"] = Relationship(back_populates="survey")
