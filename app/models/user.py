@@ -1,6 +1,7 @@
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Column, Text
 
+
 class User(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(max_length=100)
@@ -10,3 +11,5 @@ class User(SQLModel, table=True):
     surveys: list["Survey"] = Relationship(back_populates="user")
     # Survey Response Relationship
     survey_responses: list["SurveyResponse"] = Relationship(back_populates="user")
+    # Answer Relationship
+    answers: list["Answer"] = Relationship(back_populates="user")
