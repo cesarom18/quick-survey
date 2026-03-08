@@ -8,3 +8,5 @@ class User(SQLModel, table=True):
     password: str = Field(min_length=8, sa_column=Column(Text))
     # Survey Relationship
     surveys: list["Survey"] = Relationship(back_populates="user")
+    # Survey Response Relationship
+    survey_responses: list["SurveyResponse"] = Relationship(back_populates="user")
