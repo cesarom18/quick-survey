@@ -15,3 +15,5 @@ class Survey(SQLModel, table=True):
     # User Relationship
     user_id: int = Field(foreign_key="user.id")
     user: User = Relationship(back_populates="surveys")
+    # Survey Reponse Relationship
+    survey_responses: list["SurveyResponse"] = Relationship(back_populates="survey")
