@@ -2,6 +2,7 @@ from sqlmodel import SQLModel, Field, Relationship
 
 from models.user import User
 from models.question import Question
+from models.question_option import QuestionOption
 
 
 class Answer(SQLModel, table=True):
@@ -13,3 +14,6 @@ class Answer(SQLModel, table=True):
     # Question Relationship
     question_id: int = Field(foreign_key="question.id")
     question: Question = Relationship(back_populates="answers")
+    # Question Option Relationship
+    question_option_id: int | None = Field(default=None, foreign_key="question_option.id")
+    question_option: QuestionOption | None = Relationship(back_populates="answers")
