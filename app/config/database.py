@@ -1,6 +1,5 @@
 # app/database.py
 import asyncio
-import logging
 from sqlmodel import SQLModel
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
@@ -10,7 +9,16 @@ from sqlalchemy.ext.asyncio import (
 )
 
 from app.config.config import get_settings
-import app.models
+from app.models import (
+    answer,
+    question,
+    question_option,
+    question_type,
+    survey,
+    survey_category,
+    survey_response,
+    user,
+)
 
 settings = get_settings()
 # Create engine
@@ -39,8 +47,26 @@ async def close_db():
 
 async def init_db():
     # Create table
-    async with engine.begin() as conn: # Begin with the current transcation and end it, otherwise rollback
+    async with engine.begin() as conn:  # Begin with the current transcation and end it, otherwise rollback
         await conn.run_sync(SQLModel.metadata.create_all)
+    # Seed tables
+    async with async_session() as session:
+        session.add_all(
+            [
+                question.QuestionType(name="text"),
+                question.QuestionType(name="select"),
+                question.QuestionType(name="radio"),
+                question.QuestionType(name="checkbox"),
+                question.QuestionType(name="number"),
+                question.QuestionType(name="date"),
+                survey_category.SurveyCategory(name="Education"),
+                survey_category.SurveyCategory(name="Technology"),
+                survey_category.SurveyCategory(name="Business"),
+                survey_category.SurveyCategory(name="Health"),
+                survey_category.SurveyCategory(name="Entertaiment"),
+            ]
+        )
+        await session.commit()
 
 
 if __name__ == "__main__":
