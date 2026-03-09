@@ -1,5 +1,6 @@
 # app/database.py
 import asyncio
+import logging
 from sqlmodel import SQLModel
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
@@ -9,6 +10,7 @@ from sqlalchemy.ext.asyncio import (
 )
 
 from app.config.config import get_settings
+import app.models
 
 settings = get_settings()
 # Create engine
