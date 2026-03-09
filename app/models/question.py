@@ -15,3 +15,5 @@ class Question(SQLModel, table=True):
     survey: Survey = Relationship(back_populates="questions")
     # Answer Relationship
     answers: list["Answer"] = Relationship(back_populates="question")
+    # Question Option Relationship
+    question_options: list["QuestionOption"] = Relationship(back_populates="question")
