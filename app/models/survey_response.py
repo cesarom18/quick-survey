@@ -6,6 +6,7 @@ from app.models.survey import Survey
 
 
 class SurveyResponse(SQLModel, table=True):
+    __tablename__ = "survey_response"
     id: int | None = Field(default=None, primary_key=True)
     submmited_at: datetime
     # User Relationship

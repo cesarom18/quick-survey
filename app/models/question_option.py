@@ -4,6 +4,7 @@ from app.models.question import Question
 
 
 class QuestionOption(SQLModel, table=True):
+    __tablename__ = "question_option"
     id: int | None = Field(default=None, primary_key=True)
     text: str = Field(max_length=255)
     # Question Relationship
