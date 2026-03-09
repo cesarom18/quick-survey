@@ -1,7 +1,8 @@
 from sqlmodel import SQLModel, Field, Relationship
 
-from models.question_type import QuestionType
-from models.survey import Survey
+from app.models.question_type import QuestionType
+from app.models.survey import Survey
+
 
 class Question(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)

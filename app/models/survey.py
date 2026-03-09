@@ -1,8 +1,8 @@
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Column, Text
 
-from models.survey_category import SurveyCategory
-from models.user import User
+from app.models.survey_category import SurveyCategory
+from app.models.user import User
 
 class Survey(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)

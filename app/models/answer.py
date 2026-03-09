@@ -1,8 +1,8 @@
 from sqlmodel import SQLModel, Field, Relationship
 
-from models.user import User
-from models.question import Question
-from models.question_option import QuestionOption
+from app.models.user import User
+from app.models.question import Question
+from app.models.question_option import QuestionOption
 
 
 class Answer(SQLModel, table=True):

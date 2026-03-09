@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel, Field, Relationship
 
-from models.question import Question
+from app.models.question import Question
 
 
 class QuestionOption(SQLModel, table=True):
