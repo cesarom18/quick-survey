@@ -23,3 +23,21 @@ async def get_all(session: SessionDep):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=ex
         )
 
+
+@router.get(
+    "/{category_id}",
+    summary="Get survey category",
+    description="Get survey category by id",
+    response_model=SurveyCategory,
+)
+async def get_by_id(session: SessionDep, category_id: int):
+    try:
+        result = await session.execute(
+            select(SurveyCategory).where(SurveyCategory.id == category_id)
+        )
+        category = result.scalars().all()
+        return category
+    except Exception as ex:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=ex
+        )
