@@ -1,6 +1,7 @@
 # app/database.py
 import asyncio
 from typing import Annotated
+from fastapi import Depends
 from sqlmodel import SQLModel
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
@@ -41,7 +42,7 @@ async def get_session():
     async with async_session() as session:
         yield session
 
-SessionDep = Annotated[AsyncSession, get_session] # Create session dependencie
+SessionDep = Annotated[AsyncSession, Depends(get_session)] # Create session dependencie
 
 
 async def close_db():
