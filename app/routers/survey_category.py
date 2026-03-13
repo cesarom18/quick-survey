@@ -4,7 +4,7 @@ from sqlmodel import select
 from app.config.database import SessionDep
 from app.models.survey_category import SurveyCategory
 
-router = APIRouter(prefix="/survey-category")
+router = APIRouter(prefix="/survey-category", tags=["SurveyCategory"])
 
 
 @router.get(
@@ -35,7 +35,12 @@ async def get_by_id(session: SessionDep, category_id: int):
         result = await session.execute(
             select(SurveyCategory).where(SurveyCategory.id == category_id)
         )
-        category = result.scalars().all()
+        category = result.scalar_one_or_none()
+        if not category:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Survey category not found",
+            )
         return category
     except Exception as ex:
         raise HTTPException(
