@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+from fastapi import APIRouter, HTTPException, Path, status
 from sqlmodel import select
 
 from app.config.database import SessionDep
@@ -12,6 +13,7 @@ router = APIRouter(prefix="/survey-category", tags=["SurveyCategory"])
     "/",
     summary="List survey categories",
     description="Get all survey categories paginated, also you can search by name",
+    status_code=status.HTTP_200_OK,
     response_model=list[GetSurveyCategory],
 )
 async def get_survey_categories(session: SessionDep):
@@ -21,7 +23,8 @@ async def get_survey_categories(session: SessionDep):
         return categories
     except Exception:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error",
         )
 
 
@@ -29,6 +32,7 @@ async def get_survey_categories(session: SessionDep):
     "/{category_id}",
     summary="Get survey category",
     description="Get survey category by id",
+    status_code=status.HTTP_200_OK,
     response_model=GetSurveyCategory,
 )
 async def get_survey_category(session: SessionDep, category_id: int):
@@ -37,7 +41,6 @@ async def get_survey_category(session: SessionDep, category_id: int):
             select(SurveyCategory).where(SurveyCategory.id == category_id)
         )
         category = result.scalar_one_or_none()
-        # Check if category exists
         if not category:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -46,7 +49,8 @@ async def get_survey_category(session: SessionDep, category_id: int):
         return category
     except Exception:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error",
         )
 
 
@@ -54,6 +58,7 @@ async def get_survey_category(session: SessionDep, category_id: int):
     "/",
     summary="Post survey category",
     description="Create survey category",
+    status_code=status.HTTP_201_CREATED,
     response_model=GetSurveyCategory,
 )
 async def create_survey_category(session: SessionDep, data: CreateSurveyCategory):
@@ -62,8 +67,34 @@ async def create_survey_category(session: SessionDep, data: CreateSurveyCategory
         session.add(category)
         await session.commit()
         await session.refresh(category)
-        return category 
+        return category
     except Exception:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error",
+        )
+
+
+@router.delete(
+    "/{category_id}",
+    summary="Delete survey category",
+    description="Delete survey category",
+    status_code=status.HTTP_204_NO_CONTENT
+)
+async def delete_survey_category(
+    session: SessionDep, category_id: Annotated[int, Path(gt=0)]
+):
+    try:
+        category = await session.get(SurveyCategory, category_id) 
+        if not category:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Survey category not found",
+            )
+        await session.deleted(category)
+        await session.commit()
+    except Exception:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error",
         )
