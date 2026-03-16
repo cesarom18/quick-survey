@@ -73,4 +73,20 @@ async def update_user(
     return user 
 
 
-
+@router.delete(
+    "/{user_id}",
+    summary="Delete user",
+    description="Delete user",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_user(
+    session: SessionDep, user_id: Annotated[int, Path(gt=0)]
+):
+    user = await session.get(User, user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
+    await session.deleted(user)
+    await session.commit()
