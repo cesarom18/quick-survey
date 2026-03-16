@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException, status
+from typing import Annotated
+from fastapi import APIRouter, HTTPException, Path, status
 from sqlmodel import select
 
 from app.config.database import SessionDep
@@ -20,7 +21,7 @@ async def get_users(session: SessionDep):
     status_code=status.HTTP_200_OK,
     response_model=GetUser,
 )
-async def get_user(session: SessionDep, user_id: int):
+async def get_user(session: SessionDep, user_id: Annotated[int, Path(gt=0)]):
     user = await session.get(User, user_id)
     if not user:
         raise HTTPException(
@@ -43,4 +44,33 @@ async def create_user(session: SessionDep, data: CreateUser):
     await session.commit()
     await session.refresh(user)
     return user 
+
+
+@router.put(
+    "/{user_id}",
+    summary="Put user",
+    description="Update user",
+    status_code=status.HTTP_200_OK,
+    response_model=GetUser,
+)
+async def update_user(
+    session: SessionDep,
+    user_id: Annotated[int, Path(gt=0)],
+    data: CreateUser,
+):
+    user = await session.get(User, user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found",
+        )
+    updated_data = data.model_dump(exclude_unset=True)
+    for key, value in updated_data.items():
+        setattr(user, key, value)
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
+    return user 
+
+
 
