@@ -17,15 +17,9 @@ router = APIRouter(prefix="/survey-category", tags=["SurveyCategory"])
     response_model=list[GetSurveyCategory],
 )
 async def get_survey_categories(session: SessionDep):
-    try:
-        result = await session.execute(select(SurveyCategory))
-        categories = result.scalars().all()
-        return categories
-    except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error",
-        )
+    result = await session.execute(select(SurveyCategory))
+    categories = result.scalars().all()
+    return categories
 
 
 @router.get(
@@ -36,22 +30,16 @@ async def get_survey_categories(session: SessionDep):
     response_model=GetSurveyCategory,
 )
 async def get_survey_category(session: SessionDep, category_id: int):
-    try:
-        result = await session.execute(
-            select(SurveyCategory).where(SurveyCategory.id == category_id)
-        )
-        category = result.scalar_one_or_none()
-        if not category:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Survey category not found",
-            )
-        return category
-    except Exception:
+    result = await session.execute(
+        select(SurveyCategory).where(SurveyCategory.id == category_id)
+    )
+    category = result.scalar_one_or_none()
+    if not category:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Survey category not found",
         )
+    return category
 
 
 @router.post(
@@ -62,17 +50,11 @@ async def get_survey_category(session: SessionDep, category_id: int):
     response_model=GetSurveyCategory,
 )
 async def create_survey_category(session: SessionDep, data: CreateSurveyCategory):
-    try:
-        category = SurveyCategory(**data.model_dump())
-        session.add(category)
-        await session.commit()
-        await session.refresh(category)
-        return category
-    except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error",
-        )
+    category = SurveyCategory(**data.model_dump())
+    session.add(category)
+    await session.commit()
+    await session.refresh(category)
+    return category
 
 
 @router.put(
@@ -87,25 +69,19 @@ async def update_survey_category(
     category_id: Annotated[int, Path(gt=0)],
     data: CreateSurveyCategory,
 ):
-    try:
-        category = await session.get(SurveyCategory, category_id)
-        if not category:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Survey category not found",
-            )
-        updated_data = data.model_dump(exclude_unset=True)
-        for key, value in updated_data.items():
-            setattr(category, key, value)
-        session.add(category)
-        await session.commit()
-        await session.refresh(category)
-        return category
-    except Exception:
+    category = await session.get(SurveyCategory, category_id)
+    if not category:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Survey category not found",
         )
+    updated_data = data.model_dump(exclude_unset=True)
+    for key, value in updated_data.items():
+        setattr(category, key, value)
+    session.add(category)
+    await session.commit()
+    await session.refresh(category)
+    return category
 
 
 @router.delete(
@@ -117,17 +93,11 @@ async def update_survey_category(
 async def delete_survey_category(
     session: SessionDep, category_id: Annotated[int, Path(gt=0)]
 ):
-    try:
-        category = await session.get(SurveyCategory, category_id)
-        if not category:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Survey category not found",
-            )
-        await session.deleted(category)
-        await session.commit()
-    except Exception:
+    category = await session.get(SurveyCategory, category_id)
+    if not category:
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error",
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Survey category not found",
         )
+    await session.deleted(category)
+    await session.commit()
