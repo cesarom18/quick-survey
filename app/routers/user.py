@@ -3,7 +3,7 @@ from sqlmodel import select
 
 from app.config.database import SessionDep
 from app.models.user import User
-from app.schemas.user import GetUser
+from app.schemas.user import GetUser, CreateUser
 
 router = APIRouter(prefix="/users", tags=["User"])
 
@@ -30,4 +30,17 @@ async def get_user(session: SessionDep, user_id: int):
     return User 
 
 
+@router.post(
+    "/",
+    summary="Post user",
+    description="Create user",
+    status_code=status.HTTP_201_CREATED,
+    response_model=CreateUser,
+)
+async def create_user(session: SessionDep, data: CreateUser):
+    user = User(**data.model_dump())
+    session.add(user)
+    await session.commit()
+    await session.refresh(user)
+    return user 
 
