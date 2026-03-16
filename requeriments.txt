@@ -3,3 +3,4 @@ sqlmodel
 sqlalchemy[asyncio]
 asyncmy
 alembic
+pyjwt
