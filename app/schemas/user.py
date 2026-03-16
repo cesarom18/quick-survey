@@ -23,3 +23,6 @@ class CreateUser(BaseUser):
         if self.password != self.confirm_password:
             raise ValueError("Password do not match")
         return self
+
+class UpdateUser(BaseUser):
+    name: str = Field(max_length=100)

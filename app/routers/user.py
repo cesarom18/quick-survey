@@ -4,7 +4,7 @@ from sqlmodel import select
 
 from app.config.database import SessionDep
 from app.models.user import User
-from app.schemas.user import GetUser, CreateUser
+from app.schemas.user import GetUser, CreateUser, UpdateUser
 
 router = APIRouter(prefix="/users", tags=["User"])
 
@@ -56,7 +56,7 @@ async def create_user(session: SessionDep, data: CreateUser):
 async def update_user(
     session: SessionDep,
     user_id: Annotated[int, Path(gt=0)],
-    data: CreateUser,
+    data: UpdateUser,
 ):
     user = await session.get(User, user_id)
     if not user:
