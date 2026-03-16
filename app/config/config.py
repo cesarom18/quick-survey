@@ -11,6 +11,8 @@ class Settings(BaseSettings):  # Class will attempt to determine values from .en
     # DB connection settings
     echo: bool = False
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+    # Other
+    frontend_domain: str = "example"
 
 @lru_cache() # This return the previous value if the args were the same
 def get_settings() -> Settings:
