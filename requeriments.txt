@@ -4,3 +4,4 @@ sqlalchemy[asyncio]
 asyncmy
 alembic
 pyjwt
+bcrypt
