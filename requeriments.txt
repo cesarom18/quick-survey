@@ -5,3 +5,4 @@ asyncmy
 alembic
 pyjwt
 bcrypt
+cryptography
