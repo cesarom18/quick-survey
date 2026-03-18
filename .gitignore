@@ -4,3 +4,5 @@
 .$*
 # PyCache
 __pycache__
+# Venv
+venv
