@@ -1,5 +1,5 @@
 # app/routers/auth.py
-from fastapi import APIRouter, HTTPException, Response, status
+from fastapi import APIRouter, HTTPException, Response, Depends, status
 from fastapi.responses import JSONResponse
 from sqlmodel import select
 import bcrypt
@@ -7,9 +7,29 @@ import bcrypt
 from app.config.database import SessionDep
 from app.models.user import User
 from app.schemas.user import CreateUser, GetUser, LoginUser
-from app.utilities import hash_password, create_access_token
+from app.utilities import hash_password, create_access_token, GetAccessTokenDep
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
+
+
+@router.get(
+    "/me",
+    summary="Get authenticated user",
+    description="Get authenticated user",
+    status_code=status.HTTP_200_OK,
+    response_model=GetUser,
+)
+async def get_authenticated_user(session: SessionDep, access_token: GetAccessTokenDep):
+    """Get authenticated user
+
+    Args:
+        session (SessionDep): Database session dependency
+        access_token (GetAccessTokenDep): User access token
+
+    Returns:
+        user (GetUser): Normal user
+    """
+    return await session.get(User, access_token.get("sub"))
 
 
 @router.post(
@@ -23,14 +43,14 @@ async def register(session: SessionDep, data: CreateUser):
     """Endpoint to register users
 
     Args:
-        session (SessionDep): _description_
-        data (CreateUser): _description_
+        session (SessionDep): Database session dependency
+        data (CreateUser): User data
 
     Raises:
-        HTTPException: _description_
+        HTTPException: Client bad request
 
     Returns:
-        _type_: _description_
+        user (GetUser): Normal user
     """
     result = await session.execute(select(User).where(User.email == data.email))
     user = result.scalar_one_or_none()
@@ -51,7 +71,7 @@ async def register(session: SessionDep, data: CreateUser):
 
 
 @router.post(
-    "login",
+    "/login",
     summary="Login user",
     description="Login user",
     status_code=status.HTTP_200_OK,
@@ -60,15 +80,15 @@ async def login(session: SessionDep, data: LoginUser):
     """Endpoint to login users
 
     Args:
-        session (SessionDep): _description_
-        data (LoginUser): _description_
+        session (SessionDep): Database session dependency
+        data (LoginUser): User login data
 
     Raises:
-        HTTPException: _description_
+        HTTPException: Invalid user email or password
     """
     result = await session.execute(select(User).where(User.email == data.email))
     user = result.scalar_one_or_none()
-    if not user or bcrypt.checkpw(
+    if not user or not bcrypt.checkpw(
         data.password.encode("utf-8"), user.password.encode("utf-8")
     ):
         raise HTTPException(
@@ -91,20 +111,17 @@ async def login(session: SessionDep, data: LoginUser):
     return response
 
 
-@router.post(
-    "/logout",
-    summary="Logout user",
-    description="Logout user",
-    status_code=status.HTTP_200_OK,
-)
-async def logout(response: Response):
+@router.post("/logout", summary="Logout user", description="Logout user")
+async def logout(response: Response, token: GetAccessTokenDep):
     """Logout user
 
     Args:
-        response (Response): _description_
+        response (Response): FastAPI response
+
+        access_token (dict[str, Any]): User access token
 
     Returns:
-        _type_: _description_
+        response (Response): Response with access token cookie
     """
     response.delete_cookie(
         key="access_token",
@@ -112,4 +129,5 @@ async def logout(response: Response):
         httponly=True,
         samesite="lax",
     )
+    response.status_code = status.HTTP_200_OK
     return response
