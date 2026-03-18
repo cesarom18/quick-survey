@@ -1,5 +1,5 @@
 # app/routers/auth.py
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Response, status
 from fastapi.responses import JSONResponse
 from sqlmodel import select
 import bcrypt
@@ -84,6 +84,30 @@ async def login(session: SessionDep, data: LoginUser):
     response.set_cookie(
         key="access_token",
         value=access_token,
+        secure=True,
+        httponly=True,
+        samesite="lax",
+    )
+    return response
+
+
+@router.post(
+    "/logout",
+    summary="Logout user",
+    description="Logout user",
+    status_code=status.HTTP_200_OK,
+)
+async def logout(response: Response):
+    """Logout user
+
+    Args:
+        response (Response): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    response.delete_cookie(
+        key="access_token",
         secure=True,
         httponly=True,
         samesite="lax",
