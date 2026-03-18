@@ -7,7 +7,7 @@ import bcrypt
 from app.config.database import SessionDep
 from app.models.user import User
 from app.schemas.user import CreateUser, GetUser, LoginUser
-from app.utilities import hash_password, create_access_token, GetAccessTokenDep
+from app.utilities import hash_password, create_access_token, GetTokenDep
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -19,7 +19,7 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
     status_code=status.HTTP_200_OK,
     response_model=GetUser,
 )
-async def get_authenticated_user(session: SessionDep, access_token: GetAccessTokenDep):
+async def get_authenticated_user(session: SessionDep, access_token: GetTokenDep):
     """Get authenticated user
 
     Args:
@@ -112,7 +112,7 @@ async def login(session: SessionDep, data: LoginUser):
 
 
 @router.post("/logout", summary="Logout user", description="Logout user")
-async def logout(response: Response, token: GetAccessTokenDep):
+async def logout(response: Response, token: GetTokenDep):
     """Logout user
 
     Args:

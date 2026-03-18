@@ -43,7 +43,7 @@ def create_access_token(data: dict) -> str:
     return jwt.encode(to_encode, settings.jwt_secret, algorithm=ALGORITHM)
 
 
-def get_access_token(request: Request):
+def get_token(request: Request) -> dict[str, Any]:
     """Get user access token
 
     Args:
@@ -77,4 +77,34 @@ def get_access_token(request: Request):
         )
 
 
-GetAccessTokenDep = Annotated[dict[str, Any], Depends(get_access_token)]
+def get_optional_token(request: Request) -> dict[str, Any] | None:
+    """Get optional accesss token
+
+    Args:
+        request (Request): FastAPI request
+
+    Returns:
+        payload (dict[str, Any] | None): User token payload if was required or None if is not
+    """
+    token = request.cookies.get("access_token")
+    if not token:
+        return None
+    try:
+        payload = jwt.decode(
+            token,
+            settings.jwt_secret,
+            algorithms=[ALGORITHM],
+            options={
+                "require": ["sub", "exp", "nbf", "aud"],
+            },
+            audience=settings.frontend_domain,
+        )
+        return payload
+    except (jwt.ExpiredSignatureError, jwt.PyJWTError):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid access token"
+        )
+
+
+GetTokenDep = Annotated[dict[str, Any], Depends(get_token)]
+GetOptionalTokenDep = Annotated[dict[str, Any] | None, Depends(get_optional_token)]
