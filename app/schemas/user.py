@@ -1,4 +1,12 @@
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, model_validator 
+# app/schemas/user.py
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    model_validator,
+    field_validator,
+)
 
 
 class BaseUser(BaseModel):
@@ -9,6 +17,7 @@ class GetUser(BaseModel):
     id: int
     name: str
     email: str
+
 
 class CreateUser(BaseUser):
     name: str = Field(max_length=100)
@@ -23,6 +32,19 @@ class CreateUser(BaseUser):
         if self.password != self.confirm_password:
             raise ValueError("Password do not match")
         return self
+
+
+class LoginUser(BaseUser):
+    email: EmailStr
+    password: str = Field(min_length=8)
+
+    @field_validator("password", mode="after")
+    @classmethod
+    def validate_password(cls, value: str) -> str:
+        if not value.isalnum():
+            raise ValueError("Password must be alfanumeric")
+        return value
+
 
 class UpdateUser(BaseUser):
     name: str = Field(max_length=100)

@@ -1,6 +1,9 @@
 # app/config.py
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from functools import lru_cache # This method will remember the last return value if the arguments were the same
+from functools import (
+    lru_cache,
+)
+
 
 class Settings(BaseSettings):  # Class will attempt to determine values from .env file
     # DB info
@@ -13,7 +16,9 @@ class Settings(BaseSettings):  # Class will attempt to determine values from .en
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
     # Other
     frontend_domain: str = "example"
+    jwt_secret: str = "secret"
 
-@lru_cache() # This return the previous value if the args were the same
+
+@lru_cache()  # This return the previous value if the args were the same
 def get_settings() -> Settings:
     return Settings()
