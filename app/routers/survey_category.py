@@ -17,6 +17,14 @@ router = APIRouter(prefix="/survey-categories", tags=["SurveyCategory"])
     response_model=list[GetSurveyCategory],
 )
 async def get_survey_categories(session: SessionDep):
+    """Get survey categories
+
+    Args:
+        session (SessionDep): Database session dependency
+
+    Returns:
+        categories (list[GetSurveyCategory]): Survey categories
+    """
     result = await session.execute(select(SurveyCategory))
     categories = result.scalars().all()
     return categories
@@ -30,6 +38,18 @@ async def get_survey_categories(session: SessionDep):
     response_model=GetSurveyCategory,
 )
 async def get_survey_category(session: SessionDep, category_id: int):
+    """Get survey category
+
+    Args:
+        session (SessionDep): Database session dependency
+        category_id (int): Survey category ID
+
+    Raises:
+        HTTPException: Raise exception if survey category doesn't exists
+
+    Returns:
+        category (GetSurveyCategory): Survey category
+    """
     result = await session.execute(
         select(SurveyCategory).where(SurveyCategory.id == category_id)
     )
@@ -50,6 +70,15 @@ async def get_survey_category(session: SessionDep, category_id: int):
     response_model=GetSurveyCategory,
 )
 async def create_survey_category(session: SessionDep, data: CreateSurveyCategory):
+    """Create survey category
+
+    Args:
+        session (SessionDep): Database session dependency
+        data (CreateSurveyCategory): Survey category data
+
+    Returns:
+        category (GetSuveyCategory): Survey category
+    """
     category = SurveyCategory(**data.model_dump())
     session.add(category)
     await session.commit()
@@ -69,6 +98,19 @@ async def update_survey_category(
     category_id: Annotated[int, Path(gt=0)],
     data: CreateSurveyCategory,
 ):
+    """Update survey category
+
+    Args:
+        session (SessionDep): Database session dependency
+        data (CreateSurveyCategory): Survey category data
+        category_id (int): Survey category ID
+
+    Raises:
+        HTTPException: Raise exception if survey category doesn't exists
+
+    Returns:
+        category (GetSurveyCategory): Survey category
+    """
     category = await session.get(SurveyCategory, category_id)
     if not category:
         raise HTTPException(
@@ -93,6 +135,15 @@ async def update_survey_category(
 async def delete_survey_category(
     session: SessionDep, category_id: Annotated[int, Path(gt=0)]
 ):
+    """Delete survey category
+
+    Args:
+        session (SessionDep): Database session dependency
+        category_id (int): Survey category ID
+
+    Raises:
+        HTTPException: Raise exception if survey category doesn't exists
+    """
     category = await session.get(SurveyCategory, category_id)
     if not category:
         raise HTTPException(
