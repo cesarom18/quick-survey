@@ -6,7 +6,7 @@ from app.config.database import SessionDep
 from app.models.survey_category import SurveyCategory
 from app.schemas.survey_category import GetSurveyCategory, CreateSurveyCategory
 
-router = APIRouter(prefix="/survey-category", tags=["SurveyCategory"])
+router = APIRouter(prefix="/survey-categories", tags=["SurveyCategory"])
 
 
 @router.get(
