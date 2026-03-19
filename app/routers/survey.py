@@ -1,5 +1,6 @@
 # app/routers/survey.py
-from fastapi import APIRouter, status
+from fastapi import APIRouter, Path, status
+from typing import Annotated
 from sqlmodel import select
 
 from app.config.database import SessionDep
@@ -16,14 +17,20 @@ router = APIRouter(prefix="/surveys", tags=["Survey"])
     status_code=status.HTTP_200_OK,
     response_model=list[Survey],
 )
-async def get_surveys(
-    session: SessionDep,
-    token: GetOptionalTokenDep,
-    exclude_own: bool = False,
-):
-    query = select(Survey)
-    if exclude_own and token:
-        query = query.where(Survey.user_id != token.get("sub"))
-    result = await session.execute(query)
+async def get_surveys(session: SessionDep, token: GetOptionalTokenDep):
+    result = await session.execute(select(Survey))
     surveys = result.scalars().all()
+    return surveys
+
+
+@router.get(
+    "/{survey_id}",
+    summary="Get survey",
+    description="Get survey",
+    status_code=status.HTTP_200_OK,
+    response_model=Survey,
+)
+async def get_survey(session: SessionDep, survey_id: Annotated[int, Path(gt=0)]):
+    result = await session.execute(select(Survey).where(Survey.id == survey_id))
+    surveys = result.scalar_one_or_none()
     return surveys
