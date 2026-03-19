@@ -1,5 +1,5 @@
 # app/routers/survey.py
-from fastapi import APIRouter, Path, status
+from fastapi import APIRouter, Path, HTTPException, status
 from typing import Annotated
 from sqlmodel import select
 
@@ -50,3 +50,22 @@ async def create_survey(session: SessionDep, token: GetTokenDep, data: CreateSur
     await session.commit()
     await session.refresh(survey)
     return survey
+
+
+@router.delete(
+    "/{survey_id}",
+    summary="Delete survey",
+    description="Delete survey",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_survey(
+    session: SessionDep, token: GetTokenDep, survey_id: Annotated[int, Path(gt=0)]
+):
+    survey = await session.get(Survey, survey_id)
+    if not survey:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Survey not found",
+        )
+    await session.delete(survey)
+    await session.commit()
