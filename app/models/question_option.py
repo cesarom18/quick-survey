@@ -1,9 +1,20 @@
+# app/models/question_option.py
 from sqlmodel import SQLModel, Field, Relationship
 
 from app.models.question import Question
 
 
 class QuestionOption(SQLModel, table=True):
+    """Question option model
+
+    Attributes:
+        id (int): Question option ID
+        text (str): Question type text
+        question_id (int): Question ID
+        question (Question): Related question instance
+        answers (list[Answer]): Related answers instance
+    """
+
     __tablename__ = "question_option"
     id: int | None = Field(default=None, primary_key=True)
     text: str = Field(max_length=255)

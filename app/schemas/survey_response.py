@@ -9,7 +9,7 @@ class BaseSurveyResponse(BaseModel):
 
 class GetSurveyResponse(BaseModel):
     id: int
-    submmited_at: datetime
+    submitted_at: datetime
     user_id: int = Field(gt=0)
     survey_id: int = Field(gt=0)
 

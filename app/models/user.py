@@ -1,9 +1,23 @@
+# app/models/user.py
 from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Column, Text
 from datetime import datetime, timezone
 
 
 class User(SQLModel, table=True):
+    """User model
+
+    Attributes:
+        id (int): User ID
+        name (str): User name
+        email (str): User email
+        password (str): User hashed password
+        create_at (datetime): User created at datetime
+        surveys (list[Survey]): Related survey instances
+        survey_response (list[SurveyResponse]): Related survey response instance
+        answers (list[Answer]): Related answer instances
+    """
+
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(max_length=100)
     email: str = Field(unique=True)
