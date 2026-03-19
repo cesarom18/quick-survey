@@ -29,7 +29,7 @@ async def get_surveys(session: SessionDep, token: GetOptionalTokenDep):
     summary="Get survey",
     description="Get survey",
     status_code=status.HTTP_200_OK,
-    response_model=Survey,
+    response_model=GetSurvey | None,
 )
 async def get_survey(session: SessionDep, survey_id: Annotated[int, Path(gt=0)]):
     result = await session.execute(select(Survey).where(Survey.id == survey_id))
