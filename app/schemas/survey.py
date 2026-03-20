@@ -27,4 +27,4 @@ class UpdateSurvey(BaseSurvey):
     title: int = Field(max_length=150)
     description: str | None = Field(default=None, max_length=255)
     image: str
-    survey_category_ind: int
+    survey_category_id: int
