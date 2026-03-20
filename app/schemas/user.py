@@ -9,6 +9,13 @@ from pydantic import (
 )
 
 
+class UserAccessToken(BaseModel):
+    sub: str
+    exp: int
+    nbf: int
+    aud: str
+
+
 class BaseUser(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
 

@@ -6,6 +6,7 @@ from typing import Annotated, Any
 from datetime import datetime, timezone, timedelta
 
 from app.config.config import get_settings
+from app.schemas.user import UserAccessToken
 
 ALGORITHM = "HS256"
 settings = get_settings()
@@ -43,7 +44,7 @@ def create_access_token(data: dict) -> str:
     return jwt.encode(to_encode, settings.jwt_secret, algorithm=ALGORITHM)
 
 
-def get_token(request: Request) -> dict[str, Any]:
+def get_token(request: Request) -> UserAccessToken:
     """Get user access token
 
     Args:
@@ -53,7 +54,7 @@ def get_token(request: Request) -> dict[str, Any]:
         HTTPException: Unauthorized user or invalid token
 
     Returns:
-        payload (dict[str, Any]): User token payload
+        payload (User access token): User access token
     """
     token = request.cookies.get("access_token")
     if not token:
@@ -70,21 +71,21 @@ def get_token(request: Request) -> dict[str, Any]:
             },
             audience=settings.frontend_domain,
         )
-        return payload
+        return UserAccessToken(**payload)
     except (jwt.ExpiredSignatureError, jwt.PyJWTError):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid access token"
         )
 
 
-def get_optional_token(request: Request) -> dict[str, Any] | None:
+def get_optional_token(request: Request) -> UserAccessToken | None:
     """Get optional accesss token
 
     Args:
         request (Request): FastAPI request
 
     Returns:
-        payload (dict[str, Any] | None): User token payload if was required or None if is not
+        payload (UserAccessToken | None): User access token, otherwise None
     """
     token = request.cookies.get("access_token")
     if not token:
@@ -99,12 +100,12 @@ def get_optional_token(request: Request) -> dict[str, Any] | None:
             },
             audience=settings.frontend_domain,
         )
-        return payload
+        return UserAccessToken(**payload)
     except (jwt.ExpiredSignatureError, jwt.PyJWTError):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid access token"
         )
 
 
-GetTokenDep = Annotated[dict[str, Any], Depends(get_token)]
-GetOptionalTokenDep = Annotated[dict[str, Any] | None, Depends(get_optional_token)]
+GetTokenDep = Annotated[UserAccessToken, Depends(get_token)]
+GetOptionalTokenDep = Annotated[UserAccessToken | None, Depends(get_optional_token)]
