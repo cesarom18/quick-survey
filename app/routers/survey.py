@@ -2,11 +2,11 @@
 from fastapi import APIRouter, Path, HTTPException, status
 from typing import Annotated
 from sqlmodel import select
-from sqlalchemy import exists
 
 from app.config.database import SessionDep
 from app.models.survey import Survey
 from app.models.survey_response import SurveyResponse
+from app.models.question import Question
 from app.schemas.survey import GetSurvey, CreateSurvey, UpdateSurvey
 from app.utilities import GetTokenDep, GetOptionalTokenDep
 
@@ -47,10 +47,19 @@ async def get_survey(session: SessionDep, survey_id: Annotated[int, Path(gt=0)])
     response_model=GetSurvey,
 )
 async def create_survey(session: SessionDep, token: GetTokenDep, data: CreateSurvey):
-    survey = Survey(**data.model_dump())
+    # Create survey
+    survey = Survey(**data.model_dump(exclude={"questions"}), user_id=int(token.sub))
     session.add(survey)
+    await session.flush()
+    if survey.id is None:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Survey ID was not generated",
+        )
+    # Create questions
+    for question in data.questions:
+        session.add(Question(**question.model_dump(), survey_id=survey.id))
     await session.commit()
-    await session.refresh(survey)
     return survey
 
 

@@ -2,6 +2,8 @@
 from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
 
+from app.schemas.question import CreateQuestion
+
 
 class BaseSurvey(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True, extra="forbid")
@@ -20,7 +22,7 @@ class CreateSurvey(BaseSurvey):
     description: str | None = Field(default=None, max_length=255)
     image: str
     survey_category_id: int
-    user_id: int
+    questions: list[CreateQuestion] = Field(min_length=1)
 
 
 class UpdateSurvey(BaseSurvey):

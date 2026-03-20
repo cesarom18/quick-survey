@@ -18,7 +18,6 @@ class CreateQuestion(BaseQuestion):
     text: str = Field(max_length=255)
     order_index: int = Field(ge=0)
     question_type_id: int = Field(gt=0)
-    survey_id: int = Field(gt=0)
 
 
 class UpdateQuestion(BaseQuestion):
