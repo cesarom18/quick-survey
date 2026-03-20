@@ -7,7 +7,9 @@ from app.config.database import SessionDep
 from app.models.survey import Survey
 from app.models.survey_response import SurveyResponse
 from app.models.question import Question
+from app.models.question_option import QuestionOption
 from app.schemas.survey import GetSurvey, CreateSurvey, UpdateSurvey
+from app.schemas.question import QuestionTypeEnum, ALLOWED_OPTION_TYPES
 from app.utilities import GetTokenDep
 
 router = APIRouter(prefix="/surveys", tags=["Survey"])
@@ -72,9 +74,6 @@ async def create_survey(session: SessionDep, token: GetTokenDep, data: CreateSur
         token (GetTokenDep): User access token
         data (CreateSurvey): Survey data
 
-    Raises:
-        HTTPException: Survey ID not generated
-
     Returns:
         survey (GetSurvey): Survey
     """
@@ -82,15 +81,24 @@ async def create_survey(session: SessionDep, token: GetTokenDep, data: CreateSur
     survey = Survey(**data.model_dump(exclude={"questions"}), user_id=int(token.sub))
     session.add(survey)
     await session.flush()
-    if survey.id is None:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Survey ID was not generated",
-        )
     # Create questions
     for question in data.questions:
-        session.add(Question(**question.model_dump(), survey_id=survey.id))
+        new_question = Question(**question.model_dump(exclude={"question_options"}), survey_id=survey.id)  # type: ignore
+        session.add(new_question)
+        await session.flush()
+        # Create question option (If type is select, checkbox or radio)
+        if (
+            question.question_type_id in ALLOWED_OPTION_TYPES
+            and question.question_options
+        ):
+            for option in question.question_options:
+                session.add(
+                    QuestionOption(
+                        **option.model_dump(), question_id=new_question.id  # type: ignore
+                    )
+                )
     await session.commit()
+    await session.refresh(survey)
     return survey
 
 
