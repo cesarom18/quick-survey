@@ -2,9 +2,11 @@
 from fastapi import APIRouter, Path, HTTPException, status
 from typing import Annotated
 from sqlmodel import select
+from sqlalchemy import exists
 
 from app.config.database import SessionDep
 from app.models.survey import Survey
+from app.models.survey_response import SurveyResponse
 from app.schemas.survey import GetSurvey, CreateSurvey, UpdateSurvey
 from app.utilities import GetTokenDep, GetOptionalTokenDep
 
@@ -88,6 +90,16 @@ async def update_survey(
 async def delete_survey(
     session: SessionDep, token: GetTokenDep, survey_id: Annotated[int, Path(gt=0)]
 ):
+    # Delete only if there are no responses
+    result = await session.execute(
+        select(SurveyResponse).where(SurveyResponse.survey_id == survey_id)
+    )
+    answer = result.first()
+    if answer:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Survey canno't be deleted because has already responses",
+        )
     survey = await session.get(Survey, survey_id)
     if not survey:
         raise HTTPException(
