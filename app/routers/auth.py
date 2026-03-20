@@ -19,17 +19,17 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
     status_code=status.HTTP_200_OK,
     response_model=GetUser,
 )
-async def get_authenticated_user(session: SessionDep, access_token: GetTokenDep):
+async def get_authenticated_user(session: SessionDep, token: GetTokenDep):
     """Get authenticated user
 
     Args:
         session (SessionDep): Database session dependency
-        access_token (GetAccessTokenDep): User access token
+        token (GetTokenDep): User access token
 
     Returns:
         user (GetUser): Normal user
     """
-    return await session.get(User, access_token.get("sub"))
+    return await session.get(User, token.sub)
 
 
 @router.post(
@@ -118,10 +118,10 @@ async def logout(response: Response, token: GetTokenDep):
     Args:
         response (Response): FastAPI response
 
-        access_token (dict[str, Any]): User access token
+        token (GetTokenDep): User access token
 
     Returns:
-        response (Response): Response with access token cookie
+        response (Response): Response to delete access token cookie
     """
     response.delete_cookie(
         key="access_token",
