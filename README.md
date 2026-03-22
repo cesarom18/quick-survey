@@ -6,4 +6,3 @@ obtenidas con contabilziacion y graficas
 
 ## Tecnologias
 - FastAPI
-- React
