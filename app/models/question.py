@@ -27,9 +27,9 @@ class Question(SQLModel, table=True):
     question_type_id: int = Field(foreign_key="question_type.id")
     question_type: QuestionType = Relationship(back_populates="questions")
     # Survey Relationship
-    survey_id: int = Field(foreign_key="survey.id")
+    survey_id: int = Field(foreign_key="survey.id", ondelete="CASCADE")
     survey: Survey = Relationship(back_populates="questions")
     # Answer Relationship
     answers: list["Answer"] = Relationship(back_populates="question")
     # Question Option Relationship
-    question_options: list["QuestionOption"] = Relationship(back_populates="question")
+    question_options: list["QuestionOption"] = Relationship(back_populates="question", cascade_delete=True)

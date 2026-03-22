@@ -9,7 +9,7 @@ from app.models.survey_response import SurveyResponse
 from app.models.question import Question
 from app.models.question_option import QuestionOption
 from app.schemas.survey import GetSurvey, CreateSurvey, UpdateSurvey
-from app.schemas.question import QuestionTypeEnum, ALLOWED_OPTION_TYPES
+from app.schemas.question import ALLOWED_OPTION_TYPES
 from app.utilities import GetTokenDep
 
 router = APIRouter(prefix="/surveys", tags=["Survey"])
@@ -171,11 +171,13 @@ async def delete_survey(
             status_code=status.HTTP_409_CONFLICT,
             detail="Survey canno't be deleted because has already responses",
         )
+    print("Sin respuestas")
     survey = await session.get(Survey, survey_id)
     if not survey:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Survey not found",
         )
+    print("Se obtuvo encuesta")
     await session.delete(survey)
     await session.commit()

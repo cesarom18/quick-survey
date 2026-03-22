@@ -37,4 +37,4 @@ class Survey(SQLModel, table=True):
     # Survey Reponse Relationship
     survey_responses: list["SurveyResponse"] = Relationship(back_populates="survey")
     # Question Relationship
-    questions: list["Question"] = Relationship(back_populates="survey")
+    questions: list["Question"] = Relationship(back_populates="survey", cascade_delete=True)
