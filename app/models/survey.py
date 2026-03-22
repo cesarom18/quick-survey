@@ -1,6 +1,5 @@
 # app/models/survey.py
 from sqlmodel import SQLModel, Field, Relationship
-from sqlalchemy import Column, Text
 from datetime import datetime, timezone
 
 from app.models.survey_category import SurveyCategory
@@ -14,7 +13,6 @@ class Survey(SQLModel, table=True):
         id (int): Survey ID
         title (str): Survey title
         description (str | None = None): Survey description
-        image (str): Survey image
         created_at (datetime): Survey creation datetime
         survey_category_id (int): Survey category ID
         survey_category (SurveyCategory): Related survey instance
@@ -26,7 +24,6 @@ class Survey(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     title: str = Field(max_length=150)
     description: str | None = Field(default=None, max_length=255)
-    image: str = Field(sa_column=Column(Text))
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     # SurveyCategory Relationship
     survey_category_id: int = Field(foreign_key="survey_category.id")
