@@ -4,5 +4,8 @@
 .$*
 # PyCache
 __pycache__
+.python-version
 # Venv
 venv
+# Node Modules
+node_modules
