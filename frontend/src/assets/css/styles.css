@@ -4,6 +4,14 @@
 
 
 /* -= General =- */
+@theme {
+    --color-primary: #000;
+    --color-secondary: #4b5563;
+    --color-tertiary: #9CA3AF;
+    --color-neutral: #F3F4F6;
+}
+
+
 body {
     margin: 0;
     padding: 0;
