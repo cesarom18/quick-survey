@@ -1,10 +1,10 @@
 import { Avatar, Dropdown, Label } from "@heroui/react";
-import { Layers, LogOut } from "lucide-react";
+import { Files, LogOut } from "lucide-react";
 
 export const Header = () => {
     return (
-        <header className="flex justify-between items-center bg-white px-7 py-8">
-            <div className="text-primary text-xl font-extrabold">QUICK SURVEY</div>
+        <header className="flex justify-between items-center bg-white shadow-xs px-5 py-6">
+            <div className="text-xl font-extrabold">QUICK SURVEY</div>
             <nav className="flex justify-around">
                 <Dropdown>
                     <Dropdown.Trigger className="rounded-full">
@@ -16,7 +16,7 @@ export const Header = () => {
                             <Avatar.Fallback delayMs={600}>JH</Avatar.Fallback>
                         </Avatar>
                     </Dropdown.Trigger>
-                    <Dropdown.Popover offset={50}>
+                    <Dropdown.Popover offset={45}>
                         <div className="px-3 pt-3 pb-1">
                             <div className="flex items-center gap-2">
                                 <Avatar size="sm">
@@ -34,11 +34,11 @@ export const Header = () => {
                         </div>
                         <Dropdown.Menu>
                             <Dropdown.Item id="my-surveys" textValue="MySurveys">
-                                <Layers className="text-primary" />
+                                <Files />
                                 <Label>My Surveys</Label>
                             </Dropdown.Item>
                             <Dropdown.Item id="logout" textValue="Logout">
-                                <LogOut className="text-primary" />
+                                <LogOut />
                                 <Label>Logout</Label>
                             </Dropdown.Item>
                         </Dropdown.Menu>

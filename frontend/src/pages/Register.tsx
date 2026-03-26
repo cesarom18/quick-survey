@@ -2,7 +2,7 @@ import { Button, Card, Form, Input, Label, Link, TextField } from "@heroui/react
 
 export const Register = () => {
     return (
-        <Card className="rounded-3xl gap-4 w-md p-10">
+        <Card className="rounded-3xl gap-8 w-md p-10">
             <Card.Header className="text-center">
                 <Card.Title className="text-xl font-extrabold mb-2">Welcome to Quick Survey</Card.Title>
                 <Card.Description className="text-sm">Enter then following fields and create surveys!</Card.Description>

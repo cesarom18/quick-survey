@@ -2,10 +2,10 @@ import { Button, Card, Form, Link, Input, Label, TextField } from "@heroui/react
 
 export const Login = () => {
     return (
-        <Card className="rounded-3xl gap-4 w-md p-10">
+        <Card className="gap-8 w-md p-10">
             <Card.Header className="text-center">
                 <Card.Title className="text-xl font-extrabold mb-2">Welcome to Quick Survey</Card.Title>
-                <Card.Description className="text-sm">Enter your credentials toa access your profile</Card.Description>
+                <Card.Description className="text-sm">Enter your credentials to access your profile</Card.Description>
             </Card.Header>
             <Card.Content>
                 <Form className="flex flex-col gap-4">

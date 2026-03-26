@@ -4,7 +4,7 @@ import { Header } from "./Header";
 
 export const HomeLayout = () => {
     return (
-        <div className="bg-background h-full">
+        <div className="h-full">
             <Header />
             <Outlet />
         </div>

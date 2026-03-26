@@ -3,13 +3,13 @@ import { FileText } from "lucide-react";
 
 export const AuthLayout = () => {
     return (
-        <div className="flex flex-col justify-center items-center bg-background h-full ">
-            <div className="bg-foreground rounded-3xl p-2.5 mb-4">
-                <FileText color="#fff" />
+        <div className="flex flex-col justify-center items-center h-full ">
+            <div className="bg-foreground rounded-2xl p-3 mb-8">
+                <FileText className="text-white" />
             </div>
-            <div className="text-center mb-6">
-                <h1 className="text-primary text-2xl font-extrabold">QUICK SURVEY</h1>
-                <div className="text-sm text-gray-500">FAST AND SIMPLE</div>
+            <div className="text-center mb-8">
+                <h1 className="text-2xl font-extrabold">QUICK SURVEY</h1>
+                <div className="text-sm text-muted">FAST AND SIMPLE</div>
             </div>
             <Outlet />
         </div>
