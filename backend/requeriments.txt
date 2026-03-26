@@ -1,0 +1,8 @@
+fastapi[standard-no-fastapi-cloud-cli]
+sqlmodel
+sqlalchemy[asyncio]
+asyncmy
+alembic
+pyjwt
+bcrypt
+cryptography
