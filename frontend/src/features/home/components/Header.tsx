@@ -8,7 +8,7 @@ export const Header = () => {
             <nav className="flex justify-around">
                 <Dropdown>
                     <Dropdown.Trigger className="rounded-full">
-                        <Avatar>
+                        <Avatar className="rounded-3xl">
                             <Avatar.Image
                                 alt="Junior Garcia"
                                 src="https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/orange.jpg"
@@ -19,7 +19,7 @@ export const Header = () => {
                     <Dropdown.Popover offset={45}>
                         <div className="px-3 pt-3 pb-1">
                             <div className="flex items-center gap-2">
-                                <Avatar size="sm">
+                                <Avatar className="rounded-2xl" size="sm">
                                     <Avatar.Image
                                         alt="Jane"
                                         src="https://heroui-assets.nyc3.cdn.digitaloceanspaces.com/avatars/orange.jpg"

@@ -3,8 +3,8 @@ import { ArrowRight, Signal } from "lucide-react";
 
 export const SurveyCard = () => {
     return (
-        <Card className="gap-5 p-10">
-            <div className="flex justify-between">
+        <Card className="gap-6 p-10">
+            <div className="justify-between">
                 <Signal />
                 <Chip>
                     IT
