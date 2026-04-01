@@ -1,7 +1,7 @@
 import { Button, Card, Chip } from "@heroui/react";
 import { Box, Pencil, Settings, Trash2, Users } from "lucide-react";
 
-export const SurveyItem = () => {
+export const SurveyManageItem = () => {
     return (
         <Card className="p-10">
             <Card.Header className="flex-row justify-between items-center">

@@ -1,7 +1,7 @@
 import { Button, Card, Chip } from "@heroui/react";
 import { ArrowRight, Signal } from "lucide-react";
 
-export const SurveyItem = () => {
+export const SurveyPreviewItem = () => {
     return (
         <Card className="gap-6 p-10">
             <div className="justify-between">

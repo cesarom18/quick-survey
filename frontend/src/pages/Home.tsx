@@ -1,6 +1,6 @@
 import { Pagination, SearchField } from "@heroui/react";
 
-import { SurveyItem } from "../features/home/components/SurveyItem";
+import { SurveyPreviewItem } from "../features/survey/components/SurveyPreviewItem";
 
 export const Home = () => {
     return (
@@ -15,12 +15,12 @@ export const Home = () => {
                 </SearchField.Group>
             </SearchField>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
-                <SurveyItem />
-                <SurveyItem />
-                <SurveyItem />
-                <SurveyItem />
-                <SurveyItem />
-                <SurveyItem />
+                <SurveyPreviewItem />
+                <SurveyPreviewItem />
+                <SurveyPreviewItem />
+                <SurveyPreviewItem />
+                <SurveyPreviewItem />
+                <SurveyPreviewItem />
             </div>
             <Pagination className="justify-center" size="lg">
                 <Pagination.Content>

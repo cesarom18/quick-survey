@@ -1,6 +1,6 @@
 import { Card, Pagination, SearchField } from "@heroui/react";
 
-import { SurveyItem } from "../features/my-surveys/components/SurveyItem";
+import { SurveyManageItem } from "../features/survey/components/SurveyManageItem";
 
 export const MySurveys = () => {
     return (
@@ -25,11 +25,11 @@ export const MySurveys = () => {
                 </SearchField.Group>
             </SearchField>
             <div className="flex flex-col gap-4 mb-4">
-                <SurveyItem />
-                <SurveyItem />
-                <SurveyItem />
-                <SurveyItem />
-                <SurveyItem />
+                <SurveyManageItem />
+                <SurveyManageItem />
+                <SurveyManageItem />
+                <SurveyManageItem />
+                <SurveyManageItem />
             </div>
             <Pagination className="justify-center" size="lg">
                 <Pagination.Content>
