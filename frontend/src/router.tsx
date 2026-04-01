@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 
 import { HomeLayout } from "./features/home/components/HomeLayout.tsx";
-import { Home, Auth, MyProfile } from "./pages";
+import { Home, Auth, MyProfile, MySurveys } from "./pages";
 
 export const router = createBrowserRouter([
     {
@@ -9,7 +9,12 @@ export const router = createBrowserRouter([
         Component: HomeLayout,
         children: [
             { index: true, Component: Home },
-            { path: "my-profile", Component: MyProfile }
+            {
+                path: "my-profile", children: [
+                    { index: true, Component: MyProfile },
+                    { path: "surveys", Component: MySurveys }
+                ]
+            },
         ]
     },
     {
