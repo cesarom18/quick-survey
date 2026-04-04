@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router";
 
 import { HomeLayout } from "./shared/ui/HomeLayout";
-import { Home, Auth, MyProfile, MySurveys, SurveyAnswer, SurveyAnalytics } from "./pages";
+import { Home, Auth, MyProfile, MySurveys, SurveyAnswer, SurveyAnalytics, SurveyEdit } from "./pages";
 
 export const router = createBrowserRouter([
     {
@@ -15,7 +15,8 @@ export const router = createBrowserRouter([
                     {
                         path: "surveys", children: [
                             { index: true, Component: MySurveys },
-                            { path: ":surveyId/analytics", Component: SurveyAnalytics }
+                            { path: ":surveyId/analytics", Component: SurveyAnalytics },
+                            { path: ":surveyId/edit", Component: SurveyEdit },
                         ]
                     },
                 ]
