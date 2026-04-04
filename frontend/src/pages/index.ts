@@ -5,3 +5,4 @@ export { MySurveys } from "./MySurveys.tsx";
 export { SurveyAnswer } from "./SurveyAnswer.tsx";
 export { SurveyAnalytics } from "./SurveyAnalytics.tsx";
 export { SurveyEdit } from "./SurveyEdit.tsx";
+export { SurveyCreate } from "./SurveyCreate.tsx";
