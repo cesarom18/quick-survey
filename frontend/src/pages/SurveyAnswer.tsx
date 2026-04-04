@@ -1,10 +1,10 @@
 import { Button, Card, TextArea } from "@heroui/react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-export const AnswerSurvey = () => {
+export const SurveyAnswer = () => {
     return (
         <>
-            <h1 className="text-5xl font-bold mb-4">Survey Example</h1>
+            <h1 className="text-5xl font-bold mb-2">Survey Example</h1>
             <p className="text-sm text-muted mb-8">
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat eum facere asperiores at iure, in maxime recusandae modi natus consequatur quam, non enim impedit reprehenderit atque id fuga aperiam incidunt. Aliquam exercitationem pariatur atque commodi saepe corrupti mollitia labore veritatis tenetur repudiandae explicabo quibusdam voluptates, iste quis, accusantium reiciendis? Nihil, nostrum doloremque?
             </p>
