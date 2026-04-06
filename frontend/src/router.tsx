@@ -1,32 +1,49 @@
 import { createBrowserRouter } from "react-router";
 
+import {
+	Home,
+	Login,
+	MyProfile,
+	MySurveys,
+	Register,
+	SurveyAnalytics,
+	SurveyAnswer,
+	SurveyCreate,
+	SurveyEdit,
+} from "./pages";
+import { AuthLayout } from "./shared/ui/AuthLayout";
 import { HomeLayout } from "./shared/ui/HomeLayout";
-import { Home, Auth, MyProfile, MySurveys, SurveyAnswer, SurveyAnalytics, SurveyEdit, SurveyCreate } from "./pages";
 
 export const router = createBrowserRouter([
-    {
-        path: "/",
-        Component: HomeLayout,
-        children: [
-            { index: true, Component: Home },
-            {
-                path: "my-profile", children: [
-                    { index: true, Component: MyProfile },
-                    {
-                        path: "surveys", children: [
-                            { index: true, Component: MySurveys },
-                            { path: "create", Component: SurveyCreate },
-                            { path: ":surveyId/analytics", Component: SurveyAnalytics },
-                            { path: ":surveyId/edit", Component: SurveyEdit },
-                        ]
-                    },
-                ]
-            },
-            { path: "survey-answer", Component: SurveyAnswer },
-        ]
-    },
-    {
-        path: "/auth",
-        Component: Auth,
-    },
+	{
+		path: "/",
+		Component: HomeLayout,
+		children: [
+			{ index: true, Component: Home },
+			{
+				path: "my-profile",
+				children: [
+					{ index: true, Component: MyProfile },
+					{
+						path: "surveys",
+						children: [
+							{ index: true, Component: MySurveys },
+							{ path: "create", Component: SurveyCreate },
+							{ path: ":surveyId/analytics", Component: SurveyAnalytics },
+							{ path: ":surveyId/edit", Component: SurveyEdit },
+						],
+					},
+				],
+			},
+			{ path: "survey-answer", Component: SurveyAnswer },
+		],
+	},
+	{
+		path: "/auth",
+		Component: AuthLayout,
+		children: [
+			{ path: "register", Component: Register },
+			{ path: "login", Component: Login },
+		],
+	},
 ]);
