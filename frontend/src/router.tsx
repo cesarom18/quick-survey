@@ -5,6 +5,7 @@ import {
 	Login,
 	MyProfile,
 	MySurveys,
+	NotFound,
 	Register,
 	SurveyAnalytics,
 	SurveyAnswer,
@@ -46,4 +47,5 @@ export const router = createBrowserRouter([
 			{ path: "login", Component: Login },
 		],
 	},
+	{ path: "/*", Component: NotFound },
 ]);

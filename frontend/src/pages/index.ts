@@ -2,6 +2,7 @@ export { Home } from "./Home.tsx";
 export { Login } from "./Login.tsx";
 export { MyProfile } from "./MyProfile.tsx";
 export { MySurveys } from "./MySurveys.tsx";
+export { NotFound } from "./NotFound.tsx";
 export { Register } from "./Register.tsx";
 export { SurveyAnalytics } from "./SurveyAnalytics.tsx";
 export { SurveyAnswer } from "./SurveyAnswer.tsx";
