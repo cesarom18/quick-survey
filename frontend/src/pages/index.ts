@@ -1,4 +1,3 @@
-export { Auth } from "./Auth.tsx";
 export { Home } from "./Home.tsx";
 export { Login } from "./Login.tsx";
 export { MyProfile } from "./MyProfile.tsx";
@@ -8,4 +7,3 @@ export { SurveyAnalytics } from "./SurveyAnalytics.tsx";
 export { SurveyAnswer } from "./SurveyAnswer.tsx";
 export { SurveyCreate } from "./SurveyCreate.tsx";
 export { SurveyEdit } from "./SurveyEdit.tsx";
-

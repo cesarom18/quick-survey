@@ -4,19 +4,19 @@ export interface UseFetchOptions extends RequestInit {
     immediate?: boolean;
     onSuccess?: (data: any) => void;
     onError?: (error: Error) => void;
-};
+}
 
 export interface UseFetchState<T> {
     data: T | null;
     loading: boolean;
     error: Error | null;
-};
+}
 
 export interface UseFetchReturn<T> extends UseFetchState<T> {
     execute: (url?: string, options?: RequestInit) => Promise<T | null>;
     abort: () => void;
     reset: () => void;
-};
+}
 
 export function useFetch<T = any>(
     url?: string,
@@ -134,24 +134,24 @@ export function useFetch<T = any>(
         abort,
         reset,
     };
-};
+}
 
 // Convenience hooks for specific HTTP methods
 export function useGet<T = any>(url?: string, options: UseFetchOptions = {}) {
     return useFetch<T>(url, { ...options, method: "GET" });
-};
+}
 
 export function usePost<T = any>(url?: string, options: UseFetchOptions = {}) {
     return useFetch<T>(url, { ...options, method: "POST" });
-};
+}
 
 export function usePut<T = any>(url?: string, options: UseFetchOptions = {}) {
     return useFetch<T>(url, { ...options, method: "PUT" });
-};
+}
 
 export function useDelete<T = any>(
     url?: string,
     options: UseFetchOptions = {}
 ) {
     return useFetch<T>(url, { ...options, method: "DELETE" });
-};
+}
