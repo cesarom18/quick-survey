@@ -2,14 +2,15 @@ import {
 	Button,
 	FieldError,
 	Form,
+	Link as HeroLink,
 	Input,
 	Label,
 	TextField,
 } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router";
 import type { z } from "zod";
-
 import { registerUser } from "../features/auth/schemas.ts";
 
 type FormValues = z.infer<typeof registerUser>;
@@ -25,8 +26,6 @@ export const Register = () => {
 	const onSubmit = (data: FormValues) => {
 		console.log(data);
 	};
-
-	console.log(errors);
 
 	return (
 		<Form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
@@ -77,6 +76,11 @@ export const Register = () => {
 			>
 				Sign Up
 			</Button>
+			<div className="text-center">
+				<HeroLink className="no-underline hover:underline">
+					<Link to="/auth/login">Already have an account?</Link>
+				</HeroLink>
+			</div>
 		</Form>
 	);
 };

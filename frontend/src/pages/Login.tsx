@@ -2,15 +2,15 @@ import {
 	Button,
 	FieldError,
 	Form,
+	Link as HeroLink,
 	Input,
 	Label,
-	Link,
 	TextField,
 } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router";
 import type { z } from "zod";
-
 import { loginUser } from "../features/auth/schemas";
 
 type FormValues = z.infer<typeof loginUser>;
@@ -40,7 +40,9 @@ export const Login = () => {
 			<TextField type="password" name="password" isInvalid={!!errors.password}>
 				<div className="flex justify-between">
 					<Label>Password</Label>
-					<Link className="no-underline hover:underline">Forgot?</Link>
+					<HeroLink className="no-underline hover:underline">
+						<Link to="">Forgot?</Link>
+					</HeroLink>
 				</div>
 				<Input
 					variant="secondary"
@@ -57,6 +59,11 @@ export const Login = () => {
 			>
 				Sign In
 			</Button>
+			<div className="text-center">
+				<HeroLink className="no-underline hover:underline">
+					<Link to="/auth/register">Don't have an account?</Link>
+				</HeroLink>
+			</div>
 		</Form>
 	);
 };
