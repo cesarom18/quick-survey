@@ -12,8 +12,8 @@ import {
 	SurveyCreate,
 	SurveyEdit,
 } from "./pages";
-import { AuthLayout } from "./shared/ui/AuthLayout";
-import { HomeLayout } from "./shared/ui/HomeLayout";
+import { AuthLayout } from "./shared/ui/AuthLayout.tsx";
+import { HomeLayout } from "./shared/ui/HomeLayout.tsx";
 
 export const router = createBrowserRouter([
 	{
