@@ -1,13 +1,15 @@
+import { Toast } from "@heroui/react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { RouterProvider } from "react-router";
-
+import { BrowserRouter } from "react-router";
 import "./assets/css/styles.css";
-import { router } from "./router.tsx";
-
+import { AppRouter } from "./router/AppRouter";
 
 createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-        <RouterProvider router={router} />
-    </StrictMode>
-)
+	<StrictMode>
+		<BrowserRouter>
+			<Toast.Provider placement="top end" />
+			<AppRouter />
+		</BrowserRouter>
+	</StrictMode>,
+);

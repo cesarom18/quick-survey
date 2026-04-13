@@ -1,8 +1,8 @@
 {
-  "style": "default",
-  "rsc": false,
-  "tsx": true,
-  "aliases": {
-    "hooks": "./src/shared/hooks"
-  }
+    "style": "default",
+    "rsc": false,
+    "tsx": true,
+    "aliases": {
+        "hooks": "./src/shared/hooks"
+    }
 }
