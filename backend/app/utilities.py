@@ -36,7 +36,7 @@ def create_access_token(data: dict) -> str:
     to_encode = data
     to_encode.update(
         {
-            "exp": datetime.now(timezone.utc) + timedelta(minutes=2),
+            "exp": datetime.now(timezone.utc) + timedelta(hours=1),
             "nbf": datetime.now(timezone.utc),
             "aud": settings.frontend_domain,
         }
