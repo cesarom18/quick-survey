@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-import { registerAction } from "./features/auth/actions.ts";
+import { registerAction, loginAction } from "./features/auth/actions.ts";
 import {
 	Home,
 	Login,
@@ -44,7 +44,7 @@ export const router = createBrowserRouter([
 		Component: AuthLayout,
 		children: [
 			{ path: "register", Component: Register, action: registerAction },
-			{ path: "login", Component: Login },
+			{ path: "login", Component: Login, action: loginAction },
 		],
 	},
 	{ path: "/*", Component: NotFound },
